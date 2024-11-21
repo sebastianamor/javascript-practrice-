@@ -1,92 +1,60 @@
-const playlistSongs = document.getElementById("playlist-songs");
-const playButton = document.getElementById("play");
-const pauseButton = document.getElementById("pause");
-const nextButton = document.getElementById("next");
-const previousButton = document.getElementById("previous");
-const shuffleButton = document.getElementById("shuffle");
 
-const allSongs = [
-  {
-    id: 0,
-    title: "Scratching The Surface",
-    artist: "Quincy Larson",
-    duration: "4:25",
-    src: "https://cdn.freecodecamp.org/curriculum/js-music-player/scratching-the-surface.mp3",
-  },
-  {
-    id: 1,
-    title: "Can't Stay Down",
-    artist: "Quincy Larson",
-    duration: "4:15",
-    src: "https://cdn.freecodecamp.org/curriculum/js-music-player/can't-stay-down.mp3",
-  },
-  {
-    id: 2,
-    title: "Still Learning",
-    artist: "Quincy Larson",
-    duration: "3:51",
-    src: "https://cdn.freecodecamp.org/curriculum/js-music-player/still-learning.mp3",
-  },
-  {
-    id: 3,
-    title: "Cruising for a Musing",
-    artist: "Quincy Larson",
-    duration: "3:34",
-    src: "https://cdn.freecodecamp.org/curriculum/js-music-player/cruising-for-a-musing.mp3",
-  },
-  {
-    id: 4,
-    title: "Never Not Favored",
-    artist: "Quincy Larson",
-    duration: "3:35",
-    src: "https://cdn.freecodecamp.org/curriculum/js-music-player/never-not-favored.mp3",
-  },
-  {
-    id: 5,
-    title: "From the Ground Up",
-    artist: "Quincy Larson",
-    duration: "3:12",
-    src: "https://cdn.freecodecamp.org/curriculum/js-music-player/from-the-ground-up.mp3",
-  },
-  {
-    id: 6,
-    title: "Walking on Air",
-    artist: "Quincy Larson",
-    duration: "3:25",
-    src: "https://cdn.freecodecamp.org/curriculum/js-music-player/walking-on-air.mp3",
-  },
-  {
-    id: 7,
-    title: "Can't Stop Me. Can't Even Slow Me Down.",
-    artist: "Quincy Larson",
-    duration: "3:52",
-    src: "https://cdn.freecodecamp.org/curriculum/js-music-player/cant-stop-me-cant-even-slow-me-down.mp3",
-  },
-  {
-    id: 8,
-    title: "The Surest Way Out is Through",
-    artist: "Quincy Larson",
-    duration: "3:10",
-    src: "https://cdn.freecodecamp.org/curriculum/js-music-player/the-surest-way-out-is-through.mp3",
-  },
-  {
-    id: 9,
-    title: "Chasing That Feeling",
-    artist: "Quincy Larson",
-    duration: "2:43",
-    src: "https://cdn.freecodecamp.org/curriculum/js-music-player/chasing-that-feeling.mp3",
-  },
-];
-
-const audio = new Audio();
-let userData = {
-  songs: [...allSongs],
-  currentSong: null,
-  songCurrentTime: 0,
+// Obtener los elementos del DOM
+const userInput = document.getElementById("search-input");
+const searchBtn = document.getElementById("search-button");
+const pokeName = document.getElementById("pokemon-name");
+const pokeId = document.getElementById("pokemon-id");
+const wEight = document.getElementById("weight");
+const heigHt = document.getElementById("height");
+const tyPes = document.getElementById("types");
+const poKeHd = document.getElementById("hp");
+const pokeATack = document.getElementById("attack");
+const pokeDEF = document.getElementById("defense");
+const pokeSAta = document.getElementById("special-attack");
+const pokeSDef = document.getElementById("special-defense");
+const pokeSPeed = document.getElementById("speed"); 
+const pContainer = document.getElementById('pokeContainer');
+const spriteC = document.getElementById("sprite-container");
+const getPokemon = async () => {
+  try {
+    const pokeNameId = userInput.value.toLowerCase()
+    const res = await fetch(`https://pokeapi-proxy.freecodecamp.rocks/api/pokemon/${pokeNameId}`);
+    const data = await res.json();
+    setPokemonInfo(data);
+  } catch (err) {
+    alert("Pokémon not found")
+    console.log(err)
+  }
 };
 
-const printGreeting = () => {
-  console.log('Hello there!'); 
-}
+const setPokemonInfo = data => {
+  const { name, id, weight, height, types, sprites, stats } = data ;
 
-printGreeting();
+  pokeName.textContent = `${name[0].toUpperCase() + name.slice(1)}`
+
+pokeId.textContent = `ID${id}`;
+wEight.textContent = `W ${weight}`; 
+heigHt.textContent = `H ${height}`;
+
+
+spriteC.innerHTML = `regular <img id="sprite" src="${sprites.front_default}">
+  shiny <img id="sprite"  src="${sprites.front_shiny}" >`
+
+    poKeHd.textContent = data.stats[0].base_stat;
+    pokeATack.textContent = data.stats[1].base_stat;
+    pokeDEF.textContent = data.stats[2].base_stat;
+    pokeSAta.textContent = data.stats[3].base_stat;
+    pokeSDef.textContent = data.stats[4].base_stat;
+    pokeSPeed.textContent = data.stats[5].base_stat;
+};
+
+searchBtn.addEventListener('click', e => {
+  e.preventDefault();
+  getPokemon()
+})
+
+userInput.addEventListener("keydown", e => {
+  if (e.key === "Enter") {
+    searchBtn.click();
+  } 
+})
