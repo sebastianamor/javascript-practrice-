@@ -3,3 +3,6 @@ const saludar = function(nombre) {
 };
 
 saludar("carlos")
+
+
+console.log(saludar())
