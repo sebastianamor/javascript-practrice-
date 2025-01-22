@@ -1,8 +1,14 @@
-const saludar = function(nombre) {
-  return "hola" + nombre;
-};
+function App() {
+  const [count, setCount] = React.useState(0);
 
-saludar("carlos")
+  return (
+    <div className="container">
+      <h1>Contador Simple</h1>
+      <p>Has hecho clic {count} veces</p>
+      <button onClick={() => setCount(count + 1)}>Incrementar</button>
+    </div>
+  );
+}
 
-
-console.log(saludar())
+// Renderizar el componente en el DOM
+ReactDOM.render(<App />, document.getElementById("root"));
