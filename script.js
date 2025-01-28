@@ -1,14 +1,39 @@
 function App() {
-  const [text, setText] = React.useState(""); // Estado para el texto ingresado en Markdown
+  // Texto predeterminado con ejemplos de Markdown
+  const defaultMarkdown = `# Encabezado H1
+## Subencabezado H2
+
+[Este es un enlace](https://www.example.com)
+
+\`Código en línea\`
+
+\`\`\`
+// Bloque de código
+function ejemplo() {
+  console.log("Hola, mundo!");
+}
+\`\`\`
+
+- Elemento de lista 1
+- Elemento de lista 2
+
+> Esto es una cita en bloque.
+
+![Texto alternativo](https://via.placeholder.com/150)
+
+**Texto en negrita**
+`;
+
+  const [text, setText] = React.useState(defaultMarkdown); // Estado con el texto predeterminado
   const [count, setCount] = React.useState(0); // Estado para el contador
 
   const handleChange = (event) => {
-    setText(event.target.value); // Actualiza el estado del texto
+    setText(event.target.value); // Actualiza el estado con el valor del textarea
   };
 
-  // Convierte el texto Markdown a HTML usando marked
-  const renderMarkdown = () => {
-    return { __html: (text) }; // marked(text) convierte Markdown a HTML
+  // Función para convertir el texto a Markdown usando marked.js
+  const renderMarkdown = (text) => {
+    return { __html: marked.parse(text) }; // marked.parse convierte el texto a HTML
   };
 
   return (
@@ -22,8 +47,8 @@ function App() {
       </div>
       <hr />
       <div className="toolbar">
-        {/* Usa dangerouslySetInnerHTML para renderizar el HTML convertido */}
-        <div id="preview" dangerouslySetInnerHTML={renderMarkdown()}></div>
+        {/* Usamos dangerouslySetInnerHTML para renderizar el Markdown como HTML */}
+        <div id="preview" dangerouslySetInnerHTML={renderMarkdown(text)}></div>
       </div>
       <p>Has hecho clic {count} veces</p>
       <button onClick={() => setCount(count + 1)}>Incrementar</button>
@@ -33,3 +58,4 @@ function App() {
 
 // Renderizar el componente en el DOM
 ReactDOM.render(<App />, document.getElementById("root"));
+
