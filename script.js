@@ -1,30 +1,30 @@
 function App() {
-  // Texto predeterminado con ejemplos de Markdown
-  const defaultMarkdown = `# Encabezado H1
-## Subencabezado H2
+  // Texto predeterminado en Markdown
+  const defectoMarkdown =` # 見出し H1  
+## 見出し H2  
 
-[Este es un enlace](https://www.example.com)
+[これはリンクです](https://www.example.com)  
 
-\`Código en línea\`
+\`インラインコード\`  
 
-\`\`\`
-// Bloque de código
-function ejemplo() {
-  console.log("Hola, mundo!");
-}
-\`\`\`
+\`\`\`  
+// コードブロック  
+function ejemplo() {  
+  console.log("こんにちは、世界！");  
+}  
+\`\`\`  
 
-- Elemento de lista 1
-- Elemento de lista 2
+- リスト項目 1  
+- リスト項目 2  
 
-> Esto es una cita en bloque.
+> これは引用です。  
 
-![Texto alternativo](https://via.placeholder.com/150)
+![代替テキスト](https://via.placeholder.com/150)  
 
-**Texto en negrita**
-`;
+**太字テキスト**  
+   ` ;
 
-  const [text, setText] = React.useState(defaultMarkdown); // Estado con el texto predeterminado
+  const [text, setText] = React.useState(defectoMarkdown); // Estado con el texto predeterminado
   const [count, setCount] = React.useState(0); // Estado para el contador
 
   const handleChange = (event) => {
@@ -33,7 +33,7 @@ function ejemplo() {
 
   // Función para convertir el texto a Markdown usando marked.js
   const renderMarkdown = (text) => {
-    return { __html: marked.parse(text) }; // marked.parse convierte el texto a HTML
+    return { __html: marked.parse(text, { breaks: true }) };
   };
 
   return (
@@ -41,13 +41,13 @@ function ejemplo() {
       <div className="toolbar">
         <textarea
           id="editor"
-          value={text} // Vincula el valor del textarea al estado
-          onChange={handleChange} // Llama a la función al cambiar el texto
+          value={text}
+          onChange={handleChange}
         ></textarea>
       </div>
       <hr />
       <div className="toolbar">
-        {/* Usamos dangerouslySetInnerHTML para renderizar el Markdown como HTML */}
+        {/* Vista previa del Markdown convertido a HTML */}
         <div id="preview" dangerouslySetInnerHTML={renderMarkdown(text)}></div>
       </div>
       <p>Has hecho clic {count} veces</p>
@@ -56,6 +56,5 @@ function ejemplo() {
   );
 }
 
-// Renderizar el componente en el DOM
 ReactDOM.render(<App />, document.getElementById("root"));
 
